@@ -1,44 +1,42 @@
 # Solum 브라우저
 
-Android 휴대폰용 Google 검색 브라우저입니다. 검색어는 Google 검색으로 열고, 입력한 웹 주소는 앱 안의 WebView에서 보여 줍니다. 설치 및 기본 사용 방법은 아래 안내를 참고하세요.
+Android 7.0 이상 휴대폰에서 사용하는 AI 웹 브라우저입니다. Material 3 Expressive 스타일의 파란색 화면과 물결 모양 로딩바를 사용합니다.
 
-## 휴대폰에서 사용하기
+## APK 다운로드와 설치
 
-Android 7.0 이상 휴대폰에서 사용할 수 있습니다. iPhone에서는 APK를 실행할 수 없습니다.
+이 저장소의 [app-debug.apk](app-debug.apk)를 열어 **Download raw file**로 다운로드한 뒤 Android 휴대폰에 복사하여 설치합니다. 테스트용으로 서명된 디버그 APK이며 Google Play 배포용이 아닙니다. iPhone과 Windows에서는 APK를 직접 실행할 수 없습니다.
 
-1. `app\build\outputs\apk\debug\app-debug.apk`를 휴대폰에 복사합니다.
-2. 휴대폰의 파일 앱에서 APK를 열고 설치합니다.
-3. **Solum 브라우저**를 열고 위쪽 입력창에 검색어나 웹 주소를 입력합니다.
-4. 웹페이지를 연 뒤 아래의 **AI 서치** 버튼으로 페이지 내용에 대해 질문합니다. AI 기능에는 유효한 Gemini API 키가 필요합니다.
+Windows PC에서는 Android Studio의 **Tools > Device Manager**에서 가상 휴대폰을 실행하고 APK를 에뮬레이터 화면에 끌어다 놓습니다.
 
-현재 APK는 테스트용 디버그 APK이며 Google Play 배포용이 아닙니다.
+## 기본 사용법
 
-## PC에서 사용하기
+1. 위쪽 주소창에 검색어나 웹 주소를 입력하고 키보드의 **이동**을 누릅니다.
+2. 주소창 아래에서 **뒤로 / 앞으로 / 새로고침 / AI 서치 / 설정**을 사용할 수 있습니다.
+3. 웹페이지가 열리는 동안 위쪽에 물결 모양 로딩바가 표시됩니다. 페이지가 열리거나 오류가 발생하면 사라집니다.
+4. **설정(톱니바퀴)**에서 검색엔진을 **Google, Bing, Naver** 중 선택하고 **저장**합니다. 이후 검색어 검색에 적용되며 직접 입력한 웹 주소는 그대로 열립니다.
+5. 설정에 **Google Gemini API 키**를 입력하고 저장합니다. 저장한 키는 기기의 Android Keystore를 이용해 암호화하며, APK에는 개인 API 키가 포함되지 않습니다. 키를 비우고 저장하면 삭제됩니다.
+6. 웹페이지를 연 뒤 새로고침 옆의 **AI 서치**를 누르고 질문합니다. 답변 생성 중에는 물결 로딩바가 표시되고, 답변이나 오류가 나오면 사라집니다. **닫기**를 누르면 요청을 취소합니다.
 
-Windows에서 APK를 직접 실행할 수는 없습니다. Android Studio의 **Tools > Device Manager**에서 Android 7.0 이상 가상 기기를 실행한 뒤 APK를 가상 기기 화면으로 끌어다 놓아 설치합니다. 또는 아래 안내대로 프로젝트를 열고 **Run** 버튼으로 실행합니다.
+아래쪽의 큰 AI 버튼을 제거하고 WebView의 좌우 여백도 없애 웹페이지 표시 공간을 넓혔습니다.
 
-## Android Studio에서 실행
+## AI와 개인정보
 
-1. Android Studio에서 이 폴더를 열고 Gradle 동기화가 끝날 때까지 기다립니다.
-2. Android SDK 35와 JDK 17 또는 21을 설치합니다.
-3. AI 질문을 사용하려면 프로젝트 루트의 `local.properties`에 다음 값을 추가합니다. API 키 입력 화면은 앱에 포함되어 있지 않습니다.
+AI 기능은 Google Gemini의 `gemini-3.5-flash-lite` 모델을 사용합니다. 질문과 현재 페이지의 제목·주소·본문 일부가 Google Gemini로 전송됩니다. 민감한 내용이 포함된 페이지에서는 사용하지 마세요. AI 답변은 틀릴 수 있으므로 중요한 내용은 원본에서 확인하세요.
 
-   ```properties
-   AI_API_KEY=발급받은_API_키
-   AI_MODEL=gemini-3.5-flash-lite
-   ```
+API 사용에는 요금이 발생할 수 있습니다. 답변 길이는 최대 1,024 토큰이며 응답 대기 시간은 최대 60초입니다. 취소해도 서버에 이미 전달된 요청은 사용량에 반영될 수 있습니다. 429 오류는 사용량 한도, 503 오류는 서버 혼잡을 뜻합니다.
 
-   `AI_MODEL`은 사용 가능한 Google Gemini 모델로 설정합니다. 같은 이름의 Gradle 프로젝트 속성 또는 환경 변수도 사용할 수 있습니다. 키를 설정하지 않아도 Google 검색과 웹 탐색은 이용할 수 있습니다.
-4. Android 휴대폰 또는 에뮬레이터를 선택하고 `app` 구성을 실행합니다.
+**API 키를 소스 코드, README 또는 APK에 넣어 공유하지 마세요. 이전에 대화나 APK로 공개한 키는 폐기하고 새 키를 발급하세요.** 저장된 키는 앱 데이터 삭제 또는 앱 삭제 시 사라집니다.
 
-Windows에서 설치용 디버그 APK를 만들려면 Android SDK가 설정된 상태로 프로젝트 폴더에서 `.\gradlew.bat :app:assembleDebug`를 실행합니다. 결과는 `app\build\outputs\apk\debug\app-debug.apk`에 생성됩니다.
+## Android Studio에서 실행 / APK 만들기
 
-> 이 앱은 학습용 프로토타입입니다. API 키를 앱에 포함하면 APK에서 추출할 수 있으므로 실제 배포에서는 키를 앱에 넣지 말고 인증을 처리하는 서버를 통해 AI API를 호출해야 합니다.
+Android Studio에서 이 폴더를 열고 Gradle 동기화를 마칩니다. JDK 17 또는 21, Android SDK Platform 35가 필요합니다. 연결한 휴대폰 또는 에뮬레이터를 선택하고 **Run**을 누릅니다.
 
-## 포함된 기능
+Windows의 프로젝트 폴더에서 APK를 만들려면:
 
-- Google 검색어 검색 및 웹 주소 직접 열기
-- 앱 안에서 페이지를 표시하는 WebView
-- 뒤로 가기, 앞으로 가기, 새로고침
-- 현재 페이지 내용을 참고하는 AI 질문과 답변
-- 페이지 텍스트를 외부 AI 서비스로 보내기 전 안내 표시
+```powershell
+.\gradlew.bat :app:assembleDebug
+```
+
+결과 파일은 `app\build\outputs\apk\debug\app-debug.apk`입니다. AI 키는 빌드할 때 넣지 않고 설치 후 앱의 설정에서 입력합니다. 개발자는 `local.properties`의 `AI_MODEL` 속성으로 사용 가능한 Gemini 모델을 지정할 수 있습니다.
+
+자세한 안내는 [사용법.md](사용법.md)를 참고하세요.
